@@ -1,19 +1,41 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <title></title>
-    <link href="style.css" rel="stylesheet" />
-    <script src="http://46.182.31.65:8080/socket.io/socket.io.js"></script>
-    <script src="client.js"></script>
+    <meta charset="utf-8">
+    <title>vue</title>
+    <link rel="stylesheet" href="css/main.css">
   </head>
   <body>
-    <div id="log"></div>
-    <br />
-    <input type="text" id="input" autofocus /><input
-      type="submit"
-      id="send"
-      value="Send"
-    />
+      <div id="all">
+        <div v-if="showall">
+    <div class="dialoglist" >
+      <div id="dialogBlock"></div>
+    </div>
+    
+    <div class="dialog" >
+      <div id="app"></div>
+      <ul  id="messages"></ul>
+    </div>
+    <div class="answer" id="addform">
+        <!-- <form id="form">
+             <input v-model="message" type="text" id="input" required autofocus autocomplete="off">
+             <button ></button>
+         </form>-->
+         <input type=text v-model="message" id="input" required autofocus autocomplete="off">
+         <button @click="addMess(message)"></button>
+         </div>
+       </div>
+
+  </div>
+    <div id="loginform"></div>
+      
+      
+    
+       
+  </div>
+    
+   <script src="/dist/build.js"></script>
+   <script src="app.js"></script>
   </body>
 </html>
+
