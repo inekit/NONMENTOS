@@ -19,23 +19,11 @@
             >Sign Up</h2>
 
             <form>
-              <input type="text" id="login" name="login" placeholder="login" v-model="login" />
-              <input
-                type="text"
-                id="password"
-                name="login"
-                placeholder="password"
-                v-model="password"
-              />
-              <input
-                v-if="reg"
-                type="text"
-                id="password"
-                name="nick"
-                placeholder="nick"
-                v-model="nick"
-              />
+              <input type="text" id="login" placeholder="login" v-model="login" />
+              <input type="text" id="password" placeholder="password" v-model="password" />
+              <input v-if="reg" type="text" id="password" placeholder="nick" v-model="nick" />
               <label v-if="isempty">Все поля должны быть заполнены</label>
+              <label v-if="iscorrect">Неверный логин или пароль</label>
               <input v-if="reg" type="submit" value="Зарегестритроваться" @click="callRegister()" />
               <input v-else type="submit" value="Войти" @click="callAuth" />
             </form>
@@ -66,6 +54,7 @@ export default {
       reg: false,
       isempty: '',
       islogged: '',
+      iscorrect: '',
       user: '',
       class1: 'active',
       class2: 'inactive underlineHover',
@@ -78,15 +67,17 @@ export default {
       const myApi = axios.create({
         withCredentials: true,
       })
-      await myApi.get('http://localhost:3000/logout/')
-      this.islogged = false
-      this.show = false
+      myApi.get('http://localhost:3000/logout/')
+      window.location.reload()
     },
     close() {
       this.show = false
     },
     async callAuth() {
+      if (this.iscorrect) this.iscorrect = false
       if (this.login && this.password) {
+        this.isempty = false
+
         const myApi = axios.create({
           withCredentials: true,
         })
@@ -100,12 +91,15 @@ export default {
           this.$root.id = response.data.id
           this.islogged = true
           this.show = false
+
           this.user = response.data.id
-        }
+          window.location.reload()
+        } else this.iscorrect = true
       } else this.isempty = true
     },
     async callRegister() {
       if (this.login && this.password && this.nick) {
+        this.isempty = false
         const myApi = axios.create({
           withCredentials: true,
         })
@@ -114,7 +108,7 @@ export default {
           password: this.password,
           nick: this.nick,
         })
-      }
+      } else this.isempty = true
     },
   },
   async mounted() {

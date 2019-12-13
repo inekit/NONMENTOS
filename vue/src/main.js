@@ -4,7 +4,6 @@ import Example from './Example.vue'
 import message from './message.vue'
 import dialog from './dialog.vue'
 import loginform from './loginform.vue'
-import VueResource from 'vue-resource'
 import VueSuperagent from 'vue-superagent'
 import axios from 'axios'
 Vue.component('app-example', Example)
@@ -54,7 +53,7 @@ new Vue({
     }
   },
   methods: {
-    async addMess(value) {
+    addMess(value) {
       const myApi = axios.create({
         withCredentials: true,
       })
