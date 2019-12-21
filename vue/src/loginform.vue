@@ -67,7 +67,7 @@ export default {
       const myApi = axios.create({
         withCredentials: true,
       })
-      myApi.get('http://localhost:3000/logout/')
+      myApi.get('http://localhost:5000/logout/')
       window.location.reload()
     },
     close() {
@@ -81,11 +81,11 @@ export default {
         const myApi = axios.create({
           withCredentials: true,
         })
-        await myApi.post('http://localhost:3000/login/', {
+        await myApi.post('http://localhost:5000/login/', {
           email: this.login,
           password: this.password,
         })
-        const response = await myApi.get('http://localhost:3000/id/')
+        const response = await myApi.get('http://localhost:5000/id/')
 
         if (response.data.id) {
           this.$root.id = response.data.id
@@ -103,7 +103,7 @@ export default {
         const myApi = axios.create({
           withCredentials: true,
         })
-        await myApi.post('http://localhost:3000/register/', {
+        await myApi.post('http://localhost:5000/register/', {
           email: this.login,
           password: this.password,
           nick: this.nick,
@@ -115,7 +115,7 @@ export default {
     const myApi = axios.create({
       withCredentials: true,
     })
-    const response = await myApi.get('http://localhost:3000/id/')
+    const response = await myApi.get('http://localhost:5000/id/')
 
     if (response.data.id) {
       this.$root.id = response.data.id

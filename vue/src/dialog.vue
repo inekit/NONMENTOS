@@ -25,18 +25,18 @@ export default {
       const myApi = axios.create({
         withCredentials: true,
       })
-      const response = await myApi.post('http://localhost:3000/messages/', {
+      const response = await myApi.post('http://localhost:5000/messages/', {
         dialog: this.$root.activedialog,
       })
       this.$root.messages = response.data
+      $root.socket.emit('todialog', this.Store.activedialog)
     },
   },
   async mounted() {
     const myApi = axios.create({
       withCredentials: true,
     })
-    const response = await myApi.get('http://localhost:3000/dialogs/')
-
+    const response = await myApi.get('http://localhost:5000/dialogs/')
     let data = response.data
 
     let ids = {}

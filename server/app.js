@@ -12,8 +12,33 @@ const bodyParser = require("body-parser");
 const bcrypt = require("bcryptjs");
 var salt = bcrypt.genSaltSync(10);
 var users = [];
-var port = 5000;
-var server = new WebSocket.Server({ port });
+var port = 3000;
+var webs = http.createServer(function(req, res) {
+  console.log("createServer");
+});
+webs.listen(3000);
+
+var io = require("socket.io").listen(webs);
+
+io.on("connection", function(socket) {
+  let rid;
+  let lst = "";
+  socket.on("Client 2 Server Message", function(message) {
+    console.log(message);
+    if (rid)
+      io.sockets.in("room-" + rid).emit("Server 2 Client Message", message);
+  });
+  socket.on("todialog", function(message) {
+    rid = message;
+    console.log(message);
+    if (lst != "room-" + message) {
+      socket.join("room-" + message);
+      socket.leave(lst);
+      lst = "room-" + message;
+    }
+    console.log(socket.rooms);
+  });
+});
 app.use(
   cors({
     origin: "http://localhost:8080",
@@ -73,22 +98,7 @@ passport.use(
   })
 );
 
-server.on("connection", ws => {
-  ws.on("message", message => {
-    if (message === "exit") {
-      ws.close();
-    } else {
-      server.clients.forEach(client => {
-        if (client.readyState === WebSocket.OPEN) {
-          client.send(message);
-        }
-      });
-    }
-  });
-  ws.send("Welcome");
-});
-
-port = 3000;
+port = 5000;
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -245,4 +255,4 @@ app.get("/logout", (req, res) => {
 });
 
 //app.listen(port, () => console.log(`Example app listening on port ${port}!`));
-let srv = http.createServer(app).listen(3000);
+let srv = http.createServer(app).listen(5000);
